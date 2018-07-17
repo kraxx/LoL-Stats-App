@@ -1,0 +1,16 @@
+.listItem {
+  margin: 2em;
+  border: 1px solid black;
+}
+
+.matchId {
+  border: 1px solid black;
+}
+
+.matchWon {
+  color: green;
+}
+
+.matchLost {
+  color: red;
+}

@@ -1,0 +1,39 @@
+{
+  "name": "battlefy-challenge",
+  "version": "0.1.0",
+  "description": "LoL Stats App",
+  "main": "./server/server.js",
+  "private": true,
+  "author": "kraxx",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.4"
+  },
+  "scripts": {
+    "start": "node ./client/src/index.js",
+    "build": "webpack --mode production",
+    "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
+    "server": "nodemon server/server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "test": "nodemon server/test.js"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "concurrently": "^3.5.1",
+    "css-loader": "^0.28.11",
+    "html-webpack-plugin": "^3.2.0",
+    "nodemon": "^1.17.5",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^2.1.5",
+    "webpack-dev-server": "^3.1.4"
+  }
+}

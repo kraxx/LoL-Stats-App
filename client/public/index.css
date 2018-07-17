@@ -1,0 +1,15 @@
+body {
+  margin: 0 auto;
+  padding: 0;
+  font-family: sans-serif;
+  background-color: 'red';
+}
+
+h1 {
+    color: blue;
+}
+
+.dope {
+	color: green;
+	text-align: center;
+}

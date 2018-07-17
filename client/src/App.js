@@ -9,26 +9,36 @@ const ListItem = ({match}) => (
     <div className={match.win ? 'matchWon' : 'matchLost' }>
       {match.win ? 'WIN' : 'LOSS'}
     </div>
-    K/D/A: {match.kills}/{match.deaths}/{match.assists}
-    <br/>
-    Champion ID: {match.champion}
-    <br/>
-    Champion Level: {match.level}
-    <br/>
-    Total Creep Count: {match.minionKills}
-    <br/>
-    Items: {match.items.map(item => <div>{item}</div>)}
-    <br/>
-    Spell 1: {match.spell1}
-    <br/>
-    Spell 2: {match.spell2}
-    <br/>
+    <div>
+      Game Length: {match.duration}
+    </div>
+    <div>
+      K/D/A: {match.kills}/{match.deaths}/{match.assists}
+    </div>
+    <div>
+      Champion ID: {match.champion}
+    </div>
+    <div>
+      Champion Level: {match.level}
+    </div>
+    <div>
+      Total Creep Count: {match.minionKills}
+    </div>
+    <div>
+      Creep Score Per Min: {match.minionKills / match.duration}
+    </div>
+    <div>
+      Items: {match.items.map(item => <div>{item}</div>)}
+    </div>
+    <div>
+      Spell 1: {match.spell1}
+    </div>
+    <div>
+      Spell 2: {match.spell2}
+    </div>
   </div>
 )
 
-    // Match ID: match.gameId
-    // <br/>
-    // {match.teams[0].win === 'Win' ? 'WON MATCH' : 'LOST MATCH'}
 class App extends Component {
 
   constructor() {
@@ -81,7 +91,7 @@ class App extends Component {
           <input type='text' name='summoner' placeholder='Summoner name' />
           <input type='submit' value='Get info' />
         </form>
-        {this.state.hit && this.state.data.map(match => <ListItem key={match.gameId} match={match} />)}
+        {this.state.hit && this.state.data.map(match => <ListItem match={match} key={match.gameId} />)}
       </div>
     );
   }

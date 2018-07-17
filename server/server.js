@@ -10,7 +10,7 @@ const LOL_SUMMONER_ENDPOINT = 'summoner/v3/summoners/by-name/';
 const LOL_MATCH_LIST_ENDPOINT = 'match/v3/matchlists/by-account/';
 const LOL_MATCH_ENDPOINT = 'match/v3/matches/';
 const LOL_CHAMP_ENDPOINT = 'static-data/v3/champions/';
-const NUM_MATCHES = 2;
+const NUM_MATCHES = 5;
 
 app.use(bodyParser.json());
 
@@ -26,29 +26,15 @@ const getItems = (data, filter) => {
 
 const processData = (data, name) => {
 
-  let playerIdObj = data.participantIdentities.filter(participant => participant.player.summonerName === name )[0];
+  let playerIdObj = data.participantIdentities.filter(participant => participant.player.summonerName.toLowerCase() === name.toLowerCase() )[0];
   let ID = playerIdObj.participantId;
   let player = data.participants.filter( participant => participant.participantId === ID )[0];
-  // console.log('PLAYER FOUND: ', playerIdObj, ID);
-  // console.log('PLAYA:', player)
-  // let win = data.teams[0].win === 'WIN' && 1 <= ID <= 5 ? true : false;
-
   let champion = player.championId;
-  // let champion = axios.get(`${LOL_API}${LOL_CHAMP_ENDPOINT}${player.championId}?api_key=${LOL_KEY}`)
-  // .then(res => {
-  //   // console.log('CHAMP:',res)
-  //   return res.data.name;
-  // })
-  // .catch(err => {
-  //   return 'error getting champion';
-  // })
-
   let items = getItems(player.stats, /item/);
-
-
 
   let retData = {
     gameId: data.gameId,
+    duration: data.gameDuration,
     win: player.stats.win,
     kills: player.stats.kills,
     deaths: player.stats.deaths,
@@ -60,6 +46,8 @@ const processData = (data, name) => {
     spell1: player.spell1Id,
     spell2: player.spell2Id
   }
+
+  console.log("RET", retData)
 
   return retData;
 
@@ -93,12 +81,12 @@ app.get('/api/summoner/:summoner', (req, res) => {
     // Get Match History for IDs
     return axios.get(`${LOL_API}${LOL_MATCH_LIST_ENDPOINT}${accountId}?api_key=${LOL_KEY}&endIndex=${NUM_MATCHES}`)
     .then(matchList => {
-      // console.log("MATCHES:", matchList.data.matches);
+      console.log("MATCHES:", matchList.data.matches);
       // Get Data for Matches
       Promise.all(matchList.data.matches.map(match => {
         return axios.get(`${LOL_API}${LOL_MATCH_ENDPOINT}${match.gameId}?api_key=${LOL_KEY}`)
         .then(matchData => {
-          // console.log("GOT MATCH DATA!:", matchData.data);
+          console.log("GOT MATCH DATA!:", matchData.data);
           return processData(matchData.data, summoner);
         })
         .catch(err => {
@@ -106,13 +94,12 @@ app.get('/api/summoner/:summoner', (req, res) => {
         })
       }))
       .then(finalData => {
-        // console.log("FINALLY:", finalData);
+        console.log("FINALLY:", finalData);
         res.status(200).json(finalData);
       })
       .catch(err => {
         res.status(500).json({ error: err });
-      })
-      // res.status(200).json(matchData.data);
+      });
     })
     .catch(err => {
       console.log('ERROR FINDING MATCH', err);
